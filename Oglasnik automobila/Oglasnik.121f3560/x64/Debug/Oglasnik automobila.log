@@ -1,0 +1,8 @@
+﻿main.obj : error LNK2019: unresolved external symbol createListing referenced in function main
+main.obj : error LNK2019: unresolved external symbol showListings referenced in function main
+main.obj : error LNK2019: unresolved external symbol searchListing referenced in function main
+main.obj : error LNK2019: unresolved external symbol updateListing referenced in function main
+main.obj : error LNK2019: unresolved external symbol deleteListing referenced in function main
+main.obj : error LNK2019: unresolved external symbol saveVehicles referenced in function main
+main.obj : error LNK2019: unresolved external symbol pause referenced in function main
+C:\Users\student\Desktop\Oglasnik automobila\Oglasnik automobila\x64\Debug\Oglasnik automobila.exe : fatal error LNK1120: 7 unresolved externals
