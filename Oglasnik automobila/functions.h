@@ -1,16 +1,35 @@
 #pragma once
 #include <stdio.h>
 
+#define MAX_MARKA 32
+#define MAX_MODEL 32
+#define MAX_MOTOR 16
+#define MAX_MJENJAC 16
+
 typedef struct {
-	char marka[30];
-	char model[30];
-	//int kilometraza
-	int godinaProizvodnje;
-	char motor[20];
-	char mjenjac[20];
-	float cijena;
+	int id;
+	char make[MAX_MARKA];
+	char model[MAX_MODEL];
+	int year;
+	char engine[MAX_MOTOR];
+	char gearbox[MAX_MJENJAC];
+	int mileage;
+	float price;
 }vehicle;
 
-void loadVehicles();
-void clearInputBuffer();
-int confirmExit();
+extern int numOfVehicles;
+
+void printMenu(void);
+void createListing(vehicle** array, int* n);
+vehicle* loadVehicles;
+void showListings(vehicle* array, int n);
+void updateListing(vehicle* array, int n);
+void deleteListing(vehicle** array, int n);
+void saveVehicles(vehicle* array, int n, const char* filename);
+//void loadVehicles(vehicle* array, int n);
+void freeVehicles(vehicle* array);
+void sortVehiclesByPrice(vehicle* array, int n);
+//void removeDataFile();
+void clearInputBuffer(void);
+int confirmExit(void);
+void pause(void);

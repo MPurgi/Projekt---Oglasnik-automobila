@@ -3,44 +3,44 @@
 #include "functions.h"
 typedef enum {
 	IZLAZ,
+	DODAJ_OGLAS,
 	POPIS_OGLASA,
+	PRETRAZI_OGLAS,
 	UREDI_OGLAS,
 	OBRISI_OGLAS,
-	DODAJ_OGLAS
+	SORT_CIJENA,
+	UCITAJ_OGLASE
 }MENU;
-
-void printMenu() {
-	printf("\n===== Oglasnik automobila =====\n");
-	printf("1. Postavi oglas\n");
-	printf("2. Prikazi oglase\n");
-	printf("3. Pretrazi oglase\n");
-	printf("4. Azuriraj oglas\n");
-	printf("5. Izbrisi oglas\n");
-	printf("0. !Izlaz!\n");
-}
 
 int main() {
 	int choice;
+	int n = 0;
 	static vehicle* arrayVehicle = NULL;
-	loadVehicles();
+
+	arrayVehicle = loadVehicles(&n);
 	do {
 		printMenu();
 		scanf("%d", &choice);
 		clearInputBuffer();
 		switch (choice) {
-		case 1: createListing();
+		case 1: createListing(&arrayVehicle, &n);
 				break;
-		case 2: showListings();
+		case 2: showListings(arrayVehicle, n);
 			break;
-		case 3: searchListing();
+		case 3: updateListing(arrayVehicle, n);
 			break;
-		case 4: updateListing();
+		case 4: deleteListing(arrayVehicle, &n);
 			break;
-		case 5: deleteListing();
+		case 5: sortVehiclesByPrice(arrayVehicle, n);
+			break;
+		case 6: 
+			freeVehicles(arrayVehicle);
+			arrayVehicle = loadVehicles(&n);
 			break;
 		case 0:
 			if (confirmExit()) {
-				saveVehicles();
+				saveVehicles(arrayVehicle, n, "vehicles.txt");
+				freeVehicles(arrayVehicle);
 				printf("Izlaz iz oglasnika!\n");
 				return 0;
 			}

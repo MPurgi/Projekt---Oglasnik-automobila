@@ -1,0 +1,23 @@
+﻿  functions.c
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(48,6): error C2365: 'loadVehicles': redefinition; previous definition was 'data variable'
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.h(24): message : see declaration of 'loadVehicles'
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(53,14): warning C4098: 'loadVehicles': 'void' function returning a value
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(61,14): warning C4098: 'loadVehicles': 'void' function returning a value
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(66,21): warning C4098: 'loadVehicles': 'void' function returning a value
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(229,42): warning C4028: formal parameter 2 different from declaration
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(234,15): error C2059: syntax error: '['
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(235,22): error C2065: 'j': undeclared identifier
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(235,22): warning C4552: '<': result of expression not used
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(235,33): error C2065: 'j': undeclared identifier
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(235,35): error C2143: syntax error: missing ';' before ')'
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(243,4): error C2043: illegal break
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(245,2): error C2059: syntax error: '}'
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(249,1): error C2059: syntax error: '}'
+  main.c
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\main.c(20,29): error C2063: 'loadVehicles': not a function
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\main.c(32,37): warning C4047: 'function': 'vehicle **' differs in levels of indirection from 'vehicle *'
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\main.c(32,25): warning C4024: 'deleteListing': different types for formal and actual parameter 1
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\main.c(32,41): warning C4047: 'function': 'int' differs in levels of indirection from 'int *'
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\main.c(32,39): warning C4024: 'deleteListing': different types for formal and actual parameter 2
+C:\Users\student\Desktop\Purgar projekt\Projekt---Oglasnik-automobila-main\Oglasnik automobila\main.c(38,31): error C2063: 'loadVehicles': not a function
+  Generating Code...
