@@ -21,12 +21,11 @@ extern int numOfVehicles;
 
 void printMenu(void);
 void createListing(vehicle** array, int* n);
-vehicle* loadVehicles;
+vehicle* loadVehicles(int *n);
 void showListings(vehicle* array, int n);
 void updateListing(vehicle* array, int n);
-void deleteListing(vehicle** array, int n);
+void deleteListing(vehicle** array, int* n);
 void saveVehicles(vehicle* array, int n, const char* filename);
-//void loadVehicles(vehicle* array, int n);
 void freeVehicles(vehicle* array);
 void sortVehiclesByPrice(vehicle* array, int n);
 //void removeDataFile();

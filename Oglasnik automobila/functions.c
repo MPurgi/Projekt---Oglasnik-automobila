@@ -45,13 +45,14 @@ void createListing(vehicle** array, int* n) {
 	printf("Oglas dodan.\n");
 }
 
-void loadVehicles(int *n) {
+vehicle loadVehicles(int *n) {
 	FILE* file = fopen("vehicles.txt", "rb");
 	if (!file) {
 		perror("Ucitavanje vozila iz datoteke vehicles.txt");
 		*n = 0;
 		return NULL;
 	}
+
 	fread(n, sizeof(int), 1, file);
 	vehicle* arrayVehicle = calloc(*n, sizeof(vehicle));
 	if (!arrayVehicle && *n > 0) {
@@ -62,7 +63,6 @@ void loadVehicles(int *n) {
 	}
 	fread(arrayVehicle, sizeof(vehicle), *n, file);
 	fclose(file);
-	numOfVehicles = *n;
 	return arrayVehicle;
 }
 
@@ -231,7 +231,7 @@ void deleteListing(vehicle** array, int* n) {
 	printf("Unesi ID za brisanje: ");
 	scanf("%d", &id);
 	for (int i = 0; i < *n; i++) {
-		if ((*array=[i].id == id) {
+		if ((*array)[i].id == id) {
 			for (int j = i; j < *n - 1; j++) {
 				(*array)[j] = (*array)[j + 1];
 			}
