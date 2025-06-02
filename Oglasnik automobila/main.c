@@ -28,8 +28,10 @@ int main() {
 		case 2: showListings(arrayVehicle, n);
 			break;
 		case 3: updateListing(arrayVehicle, n);
+
 			break;
 		case 4: deleteListing(arrayVehicle, &n);
+			saveVehicles(arrayVehicle, n, "vehicles.txt");
 			break;
 		case 5: sortVehiclesByPrice(arrayVehicle, n);
 			break;

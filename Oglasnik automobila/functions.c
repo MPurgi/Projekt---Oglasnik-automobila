@@ -50,6 +50,54 @@ void createListing(vehicle** array, int* n) {
 	saveVehicles(*array, *n, "vehicles.txt");
 }
 
+//void createListing(vehicle** array, int* n) {
+//	*array = (vehicle*)realloc(*array, (*n + 1) * sizeof(vehicle));
+//	if (!*array) {
+//		perror("Alokacija neuspjela");
+//		exit(EXIT_FAILURE);
+//	}
+//
+//	int newId = (*n == 0) ? 1 : (getMaxId(*array, *n) + 1);
+//	int engineChoice;
+//
+//	vehicle* v = &(*array)[*n];
+//	v->id = newId;
+//
+//	printf("ID: %d\n", v->id);
+//	printf("Marka: ");
+//	scanf("% 31[^\n]", v->make);
+//	printf("Model: ");
+//	scanf("% 31[^\n]", v->model);
+//	printf("Cijena (u eurima): ");
+//	scanf("%f", &v->price);
+//	printf("Kilometraza: ");
+//	scanf("%d", &v->mileage);
+//	printf("Godina proizvodnje: ");
+//	scanf("%d", &v->year);
+//	printf("Odaberi vrstu motora:\n");
+//	printf("1. Benzin\n");
+//	printf("2. Dizel\n");
+//	printf("3. Hibrid\n");
+//	printf("4. Elektricni\n");
+//	printf("Unos: ");
+//	scanf("%d", &engineChoice);
+//
+//	switch (engineChoice) {
+//		case 1: strcpy(v->engine, "Benzin"); break;
+//		case 2: strcpy(v->engine, "Dizel"); break;
+//		case 3: strcpy(v->engine, "Hibrid"); break;
+//		case 4: strcpy(v->engine, "Elektricni"); break;
+//		default: strcpy(v->engine, "Nepoznato"); break;
+//	}
+//	scanf("%15s", v->engine);
+//	printf("Mjenjac (rucni, automatski...): ");
+//	scanf("%15s", v->gearbox);
+//	(*n)++;
+//	numOfVehicles = *n;
+//	printf("Oglas dodan.\n");
+//	saveVehicles(*array, *n, "vehicles.txt");
+//}
+
 vehicle* loadVehicles(int *n) {
 	FILE* file = fopen("vehicles.txt", "rb");
 	if (!file) {
@@ -81,7 +129,7 @@ void saveVehicles(vehicle* array, int n, const char* filename) {
 	fwrite(array, sizeof(vehicle), n, fp);
 	fclose(fp);
 	
-	printf("Oglasi spremljeni u datoteku.\n");
+	printf("Spremanje u datoteku uspjesno.\n");
 }
 
 void updateListing(vehicle* array, int n) {
@@ -106,6 +154,7 @@ void updateListing(vehicle* array, int n) {
 			scanf("%15s", array[i].gearbox);
 			found = 1;
 			printf("Oglas azuriran.\n");
+			//saveVehicles(arrayVehicle, n, "vehicles.txt");
 			break;
 		}
 	}
