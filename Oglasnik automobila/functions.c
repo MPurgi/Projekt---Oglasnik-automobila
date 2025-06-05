@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "functions.h"
-static int numOfVehicles = 0;
+int numOfVehicles = 0;
+static int numOfShowListingsCalls = 0;
+
 
 void printMenu() {
 	printf("\n===== Oglasnik automobila =====\n");
@@ -13,9 +15,45 @@ void printMenu() {
 	printf("4. Izbrisi oglas\n");
 	printf("5. Sortiraj po cijeni\n");
 	printf("6. Ucitaj oglase\n");
+	printf("7. Obrisi datoteku\n");
+	printf("8. Preimenuj datoteku\n");
+	printf("9. Ispis vozila po marki\n");
 	printf("0. !Izlaz!\n");
 	printf("Odabir: ");
 }
+
+//void createListing(vehicle** array, int* n) {
+//	*array = (vehicle*)realloc(*array, (*n + 1) * sizeof(vehicle));
+//	if (!*array) {
+//		perror("Alokacija neuspjela");
+//		exit(EXIT_FAILURE);
+//	}
+//
+//	int newId = (*n == 0) ? 1 : (getMaxId(*array, *n) + 1);
+//
+//	vehicle* v = &(*array)[*n];
+//	v->id = newId;
+//
+//	printf("ID: %d\n", v->id);
+//	printf("Marka: ");
+//	scanf("%31s", v->make);
+//	printf("Model: ");
+//	scanf("%31s", v->model);
+//	printf("Cijena (u eurima): ");
+//	scanf("%f", &v->price);
+//	printf("Kilometraza: ");
+//	scanf("%d", &v->mileage);
+//	printf("Godina proizvodnje: ");
+//	scanf("%d", &v->year);
+//	printf("Motor (benzin,dizel...): ");
+//	scanf("%15s", v->engine);
+//	printf("Mjenjac (rucni, automatski...): ");
+//	scanf("%15s", v->gearbox);
+//	(*n)++;
+//	numOfVehicles = *n;
+//	printf("Oglas dodan.\n");
+//	saveVehicles(*array, *n, "vehicles.txt");
+//}
 
 void createListing(vehicle** array, int* n) {
 	*array = (vehicle*)realloc(*array, (*n + 1) * sizeof(vehicle));
@@ -30,20 +68,13 @@ void createListing(vehicle** array, int* n) {
 	v->id = newId;
 
 	printf("ID: %d\n", v->id);
-	printf("Marka: ");
-	scanf("%31s", v->make);
-	printf("Model: ");
-	scanf("%31s", v->model);
-	printf("Cijena (u eurima): ");
-	scanf("%f", &v->price);
-	printf("Kilometraza: ");
-	scanf("%d", &v->mileage);
-	printf("Godina proizvodnje: ");
-	scanf("%d", &v->year);
-	printf("Motor (benzin,dizel...): ");
-	scanf("%15s", v->engine);
-	printf("Mjenjac (rucni, automatski...): ");
-	scanf("%15s", v->gearbox);
+	safeInputString("Marka: ", v->make, MAX_MARKA);
+	safeInputString("Model: ", v->model, MAX_MODEL);
+	v->price = safeInputFloat("Cijena (u eurima): ");
+	v->mileage = safeInputInt("Kilometraza: ");
+	v->year = safeInputInt("Godina proizvodnje: ");
+	safeInputString("Motor (benzin dizel...): ", v->engine, MAX_MOTOR);
+	safeInputString("Mjenjac (rucni, automatski): ", v->gearbox, MAX_MJENJAC);
 	(*n)++;
 	numOfVehicles = *n;
 	printf("Oglas dodan.\n");
@@ -98,7 +129,28 @@ void createListing(vehicle** array, int* n) {
 //	saveVehicles(*array, *n, "vehicles.txt");
 //}
 
-vehicle* loadVehicles(int *n) {
+//vehicle* loadVehicles(int *n) {
+//	FILE* file = fopen("vehicles.txt", "rb");
+//	if (!file) {
+//		perror("Ucitavanje vozila iz datoteke vehicles.txt");
+//		*n = 0;
+//		return NULL;
+//	}
+//
+//	fread(n, sizeof(int), 1, file);
+//	vehicle* arrayVehicle = calloc(*n, sizeof(vehicle));
+//	if (!arrayVehicle && *n > 0) {
+//		perror("Alokacija memorije neuspjela");
+//		fclose(file);
+//		*n = 0;
+//		return NULL;
+//	}
+//	fread(arrayVehicle, sizeof(vehicle), *n, file);
+//	fclose(file);
+//	return arrayVehicle;
+//}
+
+vehicle* loadVehicles(int* n) {
 	FILE* file = fopen("vehicles.txt", "rb");
 	if (!file) {
 		perror("Ucitavanje vozila iz datoteke vehicles.txt");
@@ -114,7 +166,16 @@ vehicle* loadVehicles(int *n) {
 		*n = 0;
 		return NULL;
 	}
-	fread(arrayVehicle, sizeof(vehicle), *n, file);
+	size_t readCount = fread(arrayVehicle, sizeof(vehicle), *n, file);
+	if (readCount != (size_t)(*n)) {
+		printf("Upozorenje: Ucitano je samo %zu od %d vozila.\n", readCount, *n);
+	}
+	if (feof(file)) {
+		printf("Dohvacen je kraj datoteke.\n");
+	}
+	if (ferror(file)) {
+		printf("Dogodila se greska pri ucitavanju datoteke!\n");
+	}
 	fclose(file);
 	return arrayVehicle;
 }
@@ -136,22 +197,17 @@ void updateListing(vehicle* array, int n) {
 	int id, found = 0;
 	printf("Unesi ID za izmjenu: ");
 	scanf("%d", &id);
+	clearInputBuffer();
 	for (int i = 0; i < n; i++) {
 		if (array[i].id == id) {
-			printf("Nova marka: ");
-			scanf("%31s", array[i].make);
-			printf("Novi model: ");
-			scanf("%31s", array[i].model);
-			printf("Nova cijena: ");
-			scanf("%f", &array[i].price);
-			printf("Nova kilometraza: ");
-			scanf("%d", &array[i].mileage);
-			printf("Nova godina proizvodnje: ");
-			scanf("%d", &array[i].year);
-			printf("Novi motor: ");
-			scanf("%15s", array[i].engine);
-			printf("Novi mjenjac: ");
-			scanf("%15s", array[i].gearbox);
+			printf("Azuriranje podataka za ID: %d\n", id);
+			safeInputString("Marka: ", array[i].make, MAX_MARKA);
+			safeInputString("Model: ", array[i].model, MAX_MODEL);
+			array[i].price = safeInputFloat("Cijena (u eurima): ");
+			array[i].mileage = safeInputInt("Kilometraza: ");
+			array[i].year = safeInputInt("Godina proizvodnje: ");
+			safeInputString("Motor (benzin dizel...): ", array[i].engine, MAX_MOTOR);
+			safeInputString("Mjenjac (rucni, automatski): ", array[i].gearbox, MAX_MJENJAC);
 			found = 1;
 			printf("Oglas azuriran.\n");
 			//saveVehicles(arrayVehicle, n, "vehicles.txt");
@@ -163,10 +219,10 @@ void updateListing(vehicle* array, int n) {
 	}
 }
 
-void clearInputBuffer() {
-	int c;
-	while ((c = getchar()) != '\n' && c != EOF);
-}
+//static inline void clearInputBuffer(void) {
+//	int c;
+//	while ((c = getchar()) != '\n' && c != EOF);
+//}
 
 int confirmExit() {
 	char choice;
@@ -185,37 +241,70 @@ int confirmExit() {
 }
 
 void showListings(vehicle* array, int n) {
+	numOfShowListingsCalls++;
+	printf("Oglasi prikazani %d puta.\n", numOfShowListingsCalls);
 	printf("Ukupno oglasa: %d\n", n);
 	for (int i = 0; i < n; i++) {
 		printf("ID: %d | %s %s | %d | %.2f EUR | %d km | %s | %s\n", array[i].id, array[i].make, array[i].model, array[i].year, array[i].price, array[i].mileage, array[i].engine, array[i].gearbox);		
 	}
 }
 
-int deleteListing(vehicle* array, int* n) {
-	int id, found = 0;
+vehicle* deleteListing(vehicle* array, int* n) {
+	int id, found = 0,i;
 	printf("Unesi ID za brisanje: ");
 	scanf("%d", &id);
-	for (int i = 0; i < *n; i++) {
+	clearInputBuffer();
+	for (i = 0; i < *n; i++) {
 		if (array[i].id == id) {
-			for (int j = i; j < *n - 1; j++) {
-				array[j] = array[j + 1];
-			}
-			(*n)--;
-			numOfVehicles = *n;
-			array=(vehicle*)realloc(array, (*n)*sizeof(vehicle));
 			found = 1;
-			printf("Oglas obrisan.\n");
 			break;
 		}
 	}
 	if (!found) {
-		printf("Nema oglasa s tim ID-om.\n");
+		printf("Nema oglasa s tim ID-jem.\n");
 	}
-	return found;
+
+	for (int j = i; j < *n - 1; j++) {
+		array[j] = array[j + 1];
+	}
+	(*n)--;
+
+	vehicle* tmp = realloc(array, (*n) * sizeof(vehicle));
+	if (tmp == NULL && *n > 0) {
+		printf("Greska pri realokaciji memorije!\n");
+		return array;
+	}
+	printf("Oglas uspjesno obrisan.\n");
+	return tmp;
 }
 
-void freeVehicles(vehicle* array) {
-	free(array);
+//int deleteListing(vehicle* array, int* n) {
+//	int id, found = 0;
+//	printf("Unesi ID za brisanje: ");
+//	scanf("%d", &id);
+//	clearInputBuffer();
+//	for (int i = 0; i < *n; i++) {
+//		if (array[i].id == id) {
+//			for (int j = i; j < *n - 1; j++) {
+//				array[j] = array[j + 1];
+//			}
+//			(*n)--;
+//			numOfVehicles = *n;
+//			array=(vehicle*)realloc(array, (*n)*sizeof(vehicle));
+//			found = 1;
+//			printf("Oglas obrisan.\n");
+//			break;
+//		}
+//	}
+//	if (!found) {
+//		printf("Nema oglasa s tim ID-om.\n");
+//	}
+//	return found;
+//}
+
+void freeVehicles(vehicle** array) {
+	free(*array);
+	*array = NULL;
 	numOfVehicles = 0;
 }
 
@@ -231,18 +320,10 @@ int compareByPrice(const void* a, const void* b) {
 	return 0;
 }
 
-//void sortVehiclesByPrice(vehicle* array, int n) {
-//	qsort(array, n, sizeof(vehicle), compareByPrice);
-//	printf("Oglasni sortirani po cijeni:\n");
-//	for (int i = 0; i < n; i++) {
-//		printf("ID: %d | %s %s | %d | %.2f EUR | %d km | %s | %s\n", array[i].id, array[i].make, array[i].model, array[i].year, array[i].price, array[i].mileage, array[i].engine, array[i].gearbox);
-//	}
+//void pause() {
+//	printf("Pritisnite Enter za nastavak.\n");
+//	clearInputBuffer();
 //}
-
-void pause() {
-	printf("Pritisnite Enter za nastavak.\n");
-	clearInputBuffer();
-}
 
 int getMaxId(vehicle* array, int n) {
 	int maxId = 0;
@@ -281,10 +362,73 @@ void quickSortVehicles(vehicle* array, int low, int high) {
 	}
 }
 
+//void sortVehiclesByPrice(vehicle* array, int n) {
+//	quickSortVehicles(array, 0, n - 1);
+//	printf("Oglasi sortirani po cijeni(najmanje do najvise):\n");
+//	for (int i = 0; i < n; i++) {
+//		printf("ID: %d | %s %s | %d | %.2f EUR | %d km | %s | %s\n", array[i].id, array[i].make, array[i].model, array[i].year, array[i].price, array[i].mileage, array[i].engine, array[i].gearbox);
+//	}
+//}
+
 void sortVehiclesByPrice(vehicle* array, int n) {
-	quickSortVehicles(array, 0, n - 1);
+	qsort(array, n, sizeof(vehicle), compareByPrice);
 	printf("Oglasi sortirani po cijeni(najmanje do najvise):\n");
 	for (int i = 0; i < n; i++) {
 		printf("ID: %d | %s %s | %d | %.2f EUR | %d km | %s | %s\n", array[i].id, array[i].make, array[i].model, array[i].year, array[i].price, array[i].mileage, array[i].engine, array[i].gearbox);
+	}
+}
+
+void printFileSize(const char* filename) {
+	FILE* file = fopen(filename, "rb");
+	if (!file) {
+		printf("Neuspjesno otvaranje datoteke %s\n", filename);
+		return;
+	}
+	fseek(file, 0, SEEK_END);
+	long size = ftell(file);
+	rewind(file);
+	printf("Velicina datoteke '%s' iznosi %ld bajtova.\n", filename, size);
+	fclose(file);
+}
+
+void deleteFile(void) {
+	char filename[100];
+	printf("Unesi ime datoteke za brisanje: ");
+	safeInputString("", filename, 100);
+	if (remove(filename) == 0) {
+		printf("Datoteka '%s' uspjesno obrisana.\n", filename);
+	}
+	else {
+		perror("Greska pri brisanju datoteke");
+	}
+}
+
+void renameFile(void) {
+	char oldname[100], newname[100];
+	printf("Unesi trenutno ime datoteke: ");
+	safeInputString("", oldname, 100);
+	printf("Unesi novo ime datoteke: ");
+	safeInputString("", newname, 100);
+	if (rename(oldname, newname) == 0) {
+		printf("Datoteka je preimenovana u '%s'.\n", newname);
+	}
+	else {
+		perror("Greska pri preimenovanju datoteke");
+	}
+}
+
+void searchByMake(vehicle* array, int n) {
+	char marka[MAX_MARKA];
+	int found = 0;
+	safeInputString("Unesi marku vozila za pretragu: ", marka, MAX_MARKA);
+
+	for (int i = 0; i < n; i++) {
+		if (strcmp(array[i].make, marka) == 0) {
+			printf("ID: %d | %s %s | %d | %.2f EUR | %d km | %s | %s\n", array[i].id, array[i].make, array[i].model, array[i].year, array[i].price, array[i].mileage, array[i].engine, array[i].gearbox);
+			found = 1;
+		}
+	}
+	if (!found) {
+		printf("Nema vozila s markom '%s'.\n", marka);
 	}
 }

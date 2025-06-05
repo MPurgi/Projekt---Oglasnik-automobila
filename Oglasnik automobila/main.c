@@ -9,7 +9,9 @@ typedef enum {
 	UREDI_OGLAS,
 	OBRISI_OGLAS,
 	SORT_CIJENA,
-	UCITAJ_OGLASE
+	UCITAJ_OGLASE,
+	OBRISI_DATOTEKU,
+	PREIMENUJ_DATOTEKU
 }MENU;
 
 int main() {
@@ -28,21 +30,33 @@ int main() {
 		case 2: showListings(arrayVehicle, n);
 			break;
 		case 3: updateListing(arrayVehicle, n);
-
+			saveVehicles(arrayVehicle, n, "vehicles.txt");
 			break;
-		case 4: deleteListing(arrayVehicle, &n);
+		case 4: arrayVehicle = deleteListing(arrayVehicle, &n);
 			saveVehicles(arrayVehicle, n, "vehicles.txt");
 			break;
 		case 5: sortVehiclesByPrice(arrayVehicle, n);
 			break;
 		case 6: 
-			freeVehicles(arrayVehicle);
+			freeVehicles(&arrayVehicle);
+			arrayVehicle = NULL;
 			arrayVehicle = loadVehicles(&n);
+			printFileSize("vehicles.txt");
+			break;
+		case 7:
+			deleteFile();
+			break;
+		case 8:
+			renameFile();
+			break;
+		case 9:
+			searchByMake(arrayVehicle, n);
 			break;
 		case 0:
 			if (confirmExit()) {
 				saveVehicles(arrayVehicle, n, "vehicles.txt");
-				freeVehicles(arrayVehicle);
+				freeVehicles(&arrayVehicle);
+				arrayVehicle = NULL;
 				printf("Izlaz iz oglasnika!\n");
 				return 0;
 			}
@@ -54,7 +68,7 @@ int main() {
 			printf("Nevazeci odabir.\n");
 			break;
 		}
-			pause();
+			PAUSE();
 		
 	} while (1);
 	return 0;

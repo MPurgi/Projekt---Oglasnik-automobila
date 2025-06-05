@@ -1,5 +1,3 @@
 ﻿  functions.c
-  main.c
-  Generating Code...
-C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(136,1): warning C4715: 'confirmExit': not all control paths return a value
+C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(241,1): warning C4715: 'confirmExit': not all control paths return a value
   Oglasnik automobila.vcxproj -> C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\x64\Debug\Oglasnik automobila.exe
