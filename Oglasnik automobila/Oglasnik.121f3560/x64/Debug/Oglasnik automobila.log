@@ -1,3 +1,8 @@
 ﻿  functions.c
-C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(241,1): warning C4715: 'confirmExit': not all control paths return a value
+C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(456,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(476,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(508,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\functions.c(539,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  main.c
+  Generating Code...
   Oglasnik automobila.vcxproj -> C:\Users\mateo\Desktop\Projekt---Oglasnik-automobila-main\Oglasnik automobila\x64\Debug\Oglasnik automobila.exe

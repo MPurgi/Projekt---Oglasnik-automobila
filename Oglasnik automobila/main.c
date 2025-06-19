@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "functions.h"
+#include "utils.h"
 typedef enum {
 	IZLAZ,
 	DODAJ_OGLAS,
@@ -14,6 +15,8 @@ typedef enum {
 	PREIMENUJ_DATOTEKU
 }MENU;
 
+
+
 int main() {
 	int choice;
 	int n = 0;
@@ -22,12 +25,18 @@ int main() {
 	arrayVehicle = loadVehicles(&n);
 	do {
 		printMenu();
-		scanf("%d", &choice);
+		if (scanf("%d", &choice) != 1) {
+			printf("Neispravan unos! Pokusajte ponovno.\n");
+			clearInputBuffer();
+			continue;
+		}
 		clearInputBuffer();
 		switch (choice) {
 		case 1: createListing(&arrayVehicle, &n);
 				break;
-		case 2: showListings(arrayVehicle, n);
+		case 2: 
+			CLEAR_SCREEN();
+			showListings(arrayVehicle, n);
 			break;
 		case 3: updateListing(arrayVehicle, n);
 			saveVehicles(arrayVehicle, n, "vehicles.txt");

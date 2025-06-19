@@ -1,20 +1,21 @@
 #pragma once
 #include <stdio.h>
+#include "enums.h"
 
 #define MAX_MARKA 32
 #define MAX_MODEL 32
 #define MAX_MOTOR 16
 #define MAX_MJENJAC 16
-#define PAUSE() do{printf("Pritisnite Enter za nastavak.\n");clearInputBuffer(); }while(0)
-
+#define PAUSE() do{printf("Pritisnite Enter za nastavak.\n");clearInputBuffer(); CLEAR_SCREEN();}while(0)
+#define CLEAR_SCREEN() printf("\033[2J\033[1;1H")
 
 typedef struct {
 	int id;
 	char make[MAX_MARKA];
 	char model[MAX_MODEL];
 	int year;
-	char engine[MAX_MOTOR];
-	char gearbox[MAX_MJENJAC];
+	EngineType engineType;
+	GearboxType gearboxType;
 	int mileage;
 	float price;
 }vehicle;
@@ -30,51 +31,21 @@ vehicle* deleteListing(vehicle* array, int* n);
 void saveVehicles(vehicle* array, int n, const char* filename);
 void freeVehicles(vehicle** array);
 void sortVehiclesByPrice(vehicle* array, int n);
-static inline void clearInputBuffer(void) {
-	int c;
-	while ((c = getchar()) != '\n' && c != EOF);
-}
 int confirmExit(void);
-void pause(void);
 int getMaxId(vehicle* array, int n);
 void printFileSize(const char* filename);
 void deleteFile(void);
 void renameFile(void);
 void searchByMake(vehicle* array, int n);
-
-static inline int safeInputInt(const char* prompt) {
-	int value;
-	char end;
-	while (1) {
-		printf("%s", prompt);
-		if (scanf("%d%c", &value, &end) == 2 && end == '\n') {
-			return value;
-		}
-		else {
-			printf("Neispravan unos!");
-			clearInputBuffer();
-		}
-	}
-}
-
-static inline float safeInputFloat(const char* prompt) {
-	float value;
-	char end;
-	while (1) {
-		printf("%s", prompt);
-		if (scanf("%f%c", &value, &end) == 2 && end == '\n') {
-			return value;
-		}
-		else {
-			printf("Neispravan unos!");
-			clearInputBuffer();
-		}
-	}
-}
-
-static inline void safeInputString(const char* prompt, char* buffer, int size) {
-	printf("%s", prompt);
-	if (fgets(buffer, size, stdin) != NULL) {
-		buffer[strcspn(buffer, "\n")] = 0;
-	}
-}
+void inputEngine(EngineType* engineType);
+void inputGearbox(GearboxType* gearboxType);
+const char* engineTypeToString(EngineType type);
+const char* gearboxTypeToString(GearboxType type);
+void printVehicle(const vehicle* v);
+void printAllVehicles(const vehicle* array, int n);
+void inputUpdateString(char* dest, int size);
+void inputUpdateInt(int* dest);
+void inputUpdateFloat(float* dest);
+void inputUpdateYear(int* dest);
+int compareById(const void* a, const void* b);
+void toLowerString(char* str);
